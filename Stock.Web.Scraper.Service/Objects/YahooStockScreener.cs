@@ -9,9 +9,7 @@ namespace Stock.Web.Scraper.Service.Objects
     public class YahooStockScreener
     {
         public string Title { get; set; }
-
         public string ScreenerUrl { get; set; }
-
         public List<YahooStock> Stocks { get; set; }
 
         public YahooStockScreener((string title, string screenerUrl) screenerSrapingData)

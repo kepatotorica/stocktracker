@@ -92,3 +92,4 @@ C:\Users\kep\Desktop\WebScrapin\stocktracker\Stock.Web.Scraper.Service\obj\Debug
 C:\Users\kep\Desktop\WebScrapin\stocktracker\Stock.Web.Scraper.Service\obj\Debug\net5.0\ref\Stock.Web.Scraper.Service.dll
 C:\Users\kep\Desktop\WebScrapin\stocktracker\Stock.Web.Scraper.Service\obj\Debug\net5.0\Stock.Web.Scraper.Service.pdb
 C:\Users\kep\Desktop\WebScrapin\stocktracker\Stock.Web.Scraper.Service\obj\Debug\net5.0\Stock.Web.Scraper.Service.genruntimeconfig.cache
+C:\Users\kep\Desktop\WebScrapin\stocktracker\Stock.Web.Scraper.Service\bin\Debug\net5.0\CsvHelper.dll

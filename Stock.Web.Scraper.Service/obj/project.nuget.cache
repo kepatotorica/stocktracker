@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "e4QgVSEW2jybNJK88VcoYZwgQvssPrx38gvpHv2Ci096G8OtgA5Ki6G9NcpvynjhdnCB54ymAY5No3wCcCrkKA==",
+  "dgSpecHash": "P/Znf/sT70CtJUzQvm1Fjlxi9IzJdWOgZggCwEtQROnwaX15zXD8CP3jl3wK8NZv6WV5Wj3tIbsipP2Gmgo00w==",
   "success": true,
   "projectFilePath": "C:\\Users\\kep\\Desktop\\WebScrapin\\stocktracker\\Stock.Web.Scraper.Service\\Stock.Web.Scraper.Service.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\kep\\.nuget\\packages\\csvhelper\\27.2.1\\csvhelper.27.2.1.nupkg.sha512",
     "C:\\Users\\kep\\.nuget\\packages\\htmlagilitypack\\1.11.42\\htmlagilitypack.1.11.42.nupkg.sha512",
     "C:\\Users\\kep\\.nuget\\packages\\microsoft.extensions.configuration\\5.0.0\\microsoft.extensions.configuration.5.0.0.nupkg.sha512",
     "C:\\Users\\kep\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\5.0.0\\microsoft.extensions.configuration.abstractions.5.0.0.nupkg.sha512",
