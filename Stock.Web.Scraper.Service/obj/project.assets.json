@@ -1474,11 +1474,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\kep\\Desktop\\WebScrapin\\stocktracker\\Stock.Web.Scraper.Service\\Stock.Web.Scraper.Service.csproj",
+      "projectUniqueName": "C:\\WebScrapin\\stocktracker\\Stock.Web.Scraper.Service\\Stock.Web.Scraper.Service.csproj",
       "projectName": "Stock.Web.Scraper.Service",
-      "projectPath": "C:\\Users\\kep\\Desktop\\WebScrapin\\stocktracker\\Stock.Web.Scraper.Service\\Stock.Web.Scraper.Service.csproj",
+      "projectPath": "C:\\WebScrapin\\stocktracker\\Stock.Web.Scraper.Service\\Stock.Web.Scraper.Service.csproj",
       "packagesPath": "C:\\Users\\kep\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\kep\\Desktop\\WebScrapin\\stocktracker\\Stock.Web.Scraper.Service\\obj\\",
+      "outputPath": "C:\\WebScrapin\\stocktracker\\Stock.Web.Scraper.Service\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",

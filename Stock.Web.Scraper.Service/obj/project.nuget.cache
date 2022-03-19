@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "P/Znf/sT70CtJUzQvm1Fjlxi9IzJdWOgZggCwEtQROnwaX15zXD8CP3jl3wK8NZv6WV5Wj3tIbsipP2Gmgo00w==",
+  "dgSpecHash": "LJZi1XgH6LG8xNqYXnNcnWqKnri75Db12ScRvSS9+BvCUhykhDG8V62sgXEiDP9X5P0XPDbaUhXEmSqs0Ptyvg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\kep\\Desktop\\WebScrapin\\stocktracker\\Stock.Web.Scraper.Service\\Stock.Web.Scraper.Service.csproj",
+  "projectFilePath": "C:\\WebScrapin\\stocktracker\\Stock.Web.Scraper.Service\\Stock.Web.Scraper.Service.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\kep\\.nuget\\packages\\csvhelper\\27.2.1\\csvhelper.27.2.1.nupkg.sha512",
     "C:\\Users\\kep\\.nuget\\packages\\htmlagilitypack\\1.11.42\\htmlagilitypack.1.11.42.nupkg.sha512",

@@ -7,10 +7,10 @@ namespace Stock.Web.Scraper.Service.Objects
 {
     public class YahooStock
     {
-        private decimal? CurrentPrice { get; set; }
         public string Ticker { get; set; }
-        public DateTime DateAdded { get; set; }
-        public decimal? Price { get; set; }
+        public DateTime? DateAdded { get; set; }
+        public decimal? CurrentPrice { get; set; }
+        public decimal? PriceWhenAdded { get; set; }
         public decimal? DayPrice { get; set; }
         public decimal? FiveDayPrice { get; set; }
         public decimal? TenDayPrice { get; set; }
@@ -19,14 +19,22 @@ namespace Stock.Web.Scraper.Service.Objects
         //public decimal? ThreeMonthPrice { get; set; }
         //public decimal? YearPrice { get; set; }
 
-        public YahooStock(string ticker = null, DateTime? dateAdded = null)
+        public YahooStock(string ticker = null, string dateAdded = null, decimal? currentPrice = null)
         {
-            Ticker = ticker;
-            DateAdded = dateAdded ?? DateTime.UtcNow;//TODOASDF should we subtract a day here?
-            //CurrentPrice = GetCurrentPrice();
+            try
+            {
+                DateAdded = DateTime.Parse(dateAdded);
+            }
+            catch
+            {
+                DateAdded = DateTime.UtcNow;
+            }
+
+            this.Ticker = ticker;
+            this.CurrentPrice = currentPrice;
         }
 
-        public decimal? GetCurrentPrice()
+        public decimal? GetOpenPrice()
         {
             HtmlDocument doc = new HtmlWeb().Load($"https://finance.yahoo.com/quote/{Ticker}?p={Ticker}");
 
@@ -38,7 +46,7 @@ namespace Stock.Web.Scraper.Service.Objects
             DateTime now = DateTime.UtcNow;
             if (DateAdded > now.AddMinutes(-10) && DateAdded <= now) // First Time Being Added
             {
-                DayPrice = CurrentPrice;
+                PriceWhenAdded = CurrentPrice;
             }
             else if (DateAdded > now.AddHours(-24) && DateAdded <= now) // After one day
             {
