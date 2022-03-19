@@ -1,2 +1,2 @@
 # stocktracker
-Tracks the movement of stocks after being added to a csv
+Tracks the results of a finviz screener and checks the change in price of those stocks on predetermined intervals.
