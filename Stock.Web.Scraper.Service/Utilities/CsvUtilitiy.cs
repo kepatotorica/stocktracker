@@ -6,7 +6,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 
-namespace Stock.Web.Scraper.Service.Utilities.Csv
+namespace Stock.Web.Scraper.Service.Utilities
 {
     public static class CsvUtilitiy
     {
