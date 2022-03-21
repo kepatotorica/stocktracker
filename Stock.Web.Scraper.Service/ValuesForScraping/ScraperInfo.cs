@@ -11,14 +11,15 @@ namespace Stock.Web.Scraper.Service.ValuesForScraping
 
         public static class ScreenerPageIds
         {
-            public static string RowNames => "//tbody/tr/td/a";
-            public static string RowPrice => "//tbody/tr/td/fin-streamer[@data-field='regularMarketPrice']";
+            public static string RowNames => "//table//tr//td//a[contains(@class, 'screener-link-primary')]";
+            public static string RowPrice => "//table//tr//td//a//span";
         };
 
         public static readonly List<(string title, string url)> Screeners = new()
         {
-            new("Specific Testing Screener", "https://finance.yahoo.com/screener/unsaved/9ae09b48-c915-4b5d-b040-17bef5e49a81?dependentField=sector&dependentValues="),
-            new("Big Drop Large Cap", "https://finance.yahoo.com/screener/unsaved/894b6531-8650-4386-9038-86663c38712f"),
+            //new("Yahoo", "https://finance.yahoo.com/screener/predefined/growth_technology_stocks"),
+            //new("Big Drop-low PE-Optionable", "https://finviz.com/screener.ashx?v=111&f=exch_nasd,fa_pe_u10,sh_opt_option,ta_change_d7&ft=4"),
+            new("Specific Testing Screener", "https://finviz.com/screener.ashx?v=111&f=cap_microunder,exch_nasd,sh_avgvol_u750,sh_short_o30"),
         };
     }
 }

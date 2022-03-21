@@ -10,24 +10,22 @@ namespace Stock.Web.Scraper.Service.Objects
     {
         public string Title { get; set; }
         public string ScreenerUrl { get; set; }
-        public List<YahooStock> Stocks { get; set; }
+        public List<ScreenerRowData> Stocks { get; set; } = new List<ScreenerRowData>();
 
         public FinVizStockScreener((string title, string screenerUrl) screenerSrapingData)
         {
             Title = screenerSrapingData.title;
             ScreenerUrl = screenerSrapingData.screenerUrl;
-            UpdateScreener();
         }
 
         public FinVizStockScreener UpdateScreener()
         {
-            //TODOASDF need to rework all of this to work with finviz
             try
             {
                 HtmlDocument doc = new HtmlWeb().Load(ScreenerUrl);
                 var tickers = doc.DocumentNode.SelectNodes(ScraperInfo.ScreenerPageIds.RowNames).Select(rows => rows.InnerHtml);
-                var prices = doc.DocumentNode.SelectNodes(ScraperInfo.ScreenerPageIds.RowPrice).Select(rows => Decimal.Parse(rows.InnerHtml));
-                Stocks = tickers.Zip(prices).Select(tuple => new YahooStock
+                var prices = doc.DocumentNode.SelectNodes(ScraperInfo.ScreenerPageIds.RowPrice).Where((x, i) => (i - 1) % 2 == 0).Select(rows => Decimal.Parse(rows.InnerHtml));
+                Stocks = tickers.Zip(prices).Select(tuple => new ScreenerRowData
                 {
                     Ticker = tuple.First,
                     CurrentPrice = tuple.Second
@@ -35,10 +33,15 @@ namespace Stock.Web.Scraper.Service.Objects
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Invalid Screener");
-
+                Console.WriteLine("INVALID SCREENER");
             }
             return this;
+        }
+
+        public void AddRows(IEnumerable<ScreenerRowData> rowsToAdd)
+        {
+            rowsToAdd = rowsToAdd ?? new List<ScreenerRowData>();
+            Stocks = rowsToAdd.Concat(Stocks).ToList();
         }
     }
 }

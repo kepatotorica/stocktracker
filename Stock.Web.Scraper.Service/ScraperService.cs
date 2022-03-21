@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using Stock.Web.Scraper.Service.Objects;
 using Stock.Web.Scraper.Service.Utilities.Csv;
 using Stock.Web.Scraper.Service.ValuesForScraping;
-using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,39 +24,33 @@ namespace Stock.Web.Scraper.Service
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                UpdateAndScrapeAllScreeners();
-
+                try
+                {
+                    ScraperInfo.Screeners.ForEach(UpdateCsv);
+                }
+                catch { }
                 await Task.Delay(1000, stoppingToken);
             }
         }
 
-        private void UpdateAndScrapeAllScreeners()
+        private void UpdateCsv((string title, string url) s)
         {
-            var screenersWithData = ScraperInfo.Screeners.Select(s => new FinVizStockScreener(s));
-            screenersWithData = screenersWithData.Select(s => (UpdateScreenerWithExistingCsvData(s)));
-            var MyStocks = screenersWithData.First().Stocks.ToList();
-            screenersWithData.ToList().ForEach(UpdateCsv);
+            var screener = new FinVizStockScreener(s).UpdateScreener();
+            screener.AddRows(GetExistingRows(s));
+            UpdateCsv(screener);
         }
 
-        private FinVizStockScreener UpdateScreenerWithExistingCsvData(FinVizStockScreener s)
+        private IEnumerable<ScreenerRowData> GetExistingRows((string title, string url) s)
         {
-            try
-            {
-                var screener = $"{csvPath}{s.Title}".ReadFromCsv<YahooStock>().ToList();
-                s.Stocks = s.Stocks.Concat(screener).ToList();
-                //TODOASDF make these add together somehow, instead of them overwriting eachother
-                return s;
-            }
-            catch (Exception ex)
-            {
-                return s;
-            }
+            var stocks = $"{csvPath}{s.title}".ReadFromCsv<ScreenerRowData>().ToList();
+            stocks.ForEach(row => row.UpdatePrices());
+
+            return stocks ?? new List<ScreenerRowData>();
         }
 
         private void UpdateCsv(FinVizStockScreener obj)
         {
             obj.Stocks.WriteToCsv($"{csvPath}{obj.Title}");
-            //obj.Stocks.AppendToCsv($"{csvPath}{obj.Title}");
         }
     }
 }

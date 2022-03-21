@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Stock.Web.Scraper.Service.Objects
 {
-    public class YahooStock
+    public class ScreenerRowData
     {
         public string Ticker { get; set; }
         public DateTime? DateAdded { get; set; }
@@ -19,7 +19,7 @@ namespace Stock.Web.Scraper.Service.Objects
         //public decimal? ThreeMonthPrice { get; set; }
         //public decimal? YearPrice { get; set; }
 
-        public YahooStock(string ticker = null, string dateAdded = null, decimal? currentPrice = null)
+        public ScreenerRowData(string ticker = null, string dateAdded = null, decimal? currentPrice = null)
         {
             try
             {
@@ -43,14 +43,22 @@ namespace Stock.Web.Scraper.Service.Objects
 
         public void UpdatePrices()
         {
-            DateTime now = DateTime.UtcNow;
-            if (DateAdded > now.AddMinutes(-10) && DateAdded <= now) // First Time Being Added
+            //TODOASDF Find a way to cache all of the prices for any stock so we don't have to keep scraping data if the same stock pops up
+            try
             {
-                PriceWhenAdded = CurrentPrice;
+                DateTime now = DateTime.UtcNow;
+                if (DateAdded > now.AddMinutes(-10) && DateAdded <= now) // First Time Being Added
+                {
+                    PriceWhenAdded = CurrentPrice;
+                }
+                else if (DateAdded > now.AddHours(-24) && DateAdded <= now) // After one day
+                {
+                    DayPrice = CurrentPrice;
+                }
             }
-            else if (DateAdded > now.AddHours(-24) && DateAdded <= now) // After one day
+            catch (Exception ex)
             {
-                DayPrice = CurrentPrice;
+
             }
         }
 
