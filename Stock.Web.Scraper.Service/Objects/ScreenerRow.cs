@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Stock.Web.Scraper.Service.Objects
 {
-    public class ScreenerRowData
+    public class ScreenerRow
     {
         public string Ticker { get; set; }
         public DateTime? DateAdded { get; set; }
@@ -19,7 +19,7 @@ namespace Stock.Web.Scraper.Service.Objects
         //public decimal? ThreeMonthPrice { get; set; }
         //public decimal? YearPrice { get; set; }
 
-        public ScreenerRowData(string ticker = null, string dateAdded = null, decimal? currentPrice = null)
+        public ScreenerRow(string ticker = null, string dateAdded = null, decimal? currentPrice = null)
         {
             try
             {
@@ -56,11 +56,7 @@ namespace Stock.Web.Scraper.Service.Objects
                     DayPrice = CurrentPrice;
                 }
             }
-            catch (Exception ex)
-            {
-
-            }
+            catch { }
         }
-
     }
 }

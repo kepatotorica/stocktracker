@@ -10,7 +10,7 @@ namespace Stock.Web.Scraper.Service.Objects
     {
         public string Title { get; set; }
         public string ScreenerUrl { get; set; }
-        public List<ScreenerRowData> Stocks { get; set; } = new List<ScreenerRowData>();
+        public List<ScreenerRow> Stocks { get; set; } = new List<ScreenerRow>();
 
         public FinVizStockScreener((string title, string screenerUrl) screenerSrapingData)
         {
@@ -24,11 +24,25 @@ namespace Stock.Web.Scraper.Service.Objects
             {
                 HtmlDocument doc = new HtmlWeb().Load(ScreenerUrl);
                 var tickers = doc.DocumentNode.SelectNodes(ScraperInfo.ScreenerPageIds.RowNames).Select(rows => rows.InnerHtml);
-                var prices = doc.DocumentNode.SelectNodes(ScraperInfo.ScreenerPageIds.RowPrice).Where((x, i) => (i - 1) % 2 == 0).Select(rows => Decimal.Parse(rows.InnerHtml));
-                Stocks = tickers.Zip(prices).Select(tuple => new ScreenerRowData
+                var TODOASDFDELETEME = doc.DocumentNode.SelectNodes(ScraperInfo.ScreenerPageIds.RowPrice).ToList();
+                var prices = new List<decimal>();
+
+                Stocks = tickers.Select(ticker =>
                 {
-                    Ticker = tuple.First,
-                    CurrentPrice = tuple.Second
+                    var priceText = doc.DocumentNode.SelectNodes(ScraperInfo.ScreenerPageIds.RowPriceWithTicker(ticker))
+                        .Where((x, i) => i == 8)
+                        .First()
+                        .FirstChild
+                        .InnerHtml;
+
+                    var price = 0m;
+                    decimal.TryParse(priceText, out price);
+
+                    return new ScreenerRow
+                    {
+                        Ticker = ticker,
+                        CurrentPrice = price
+                    };
                 }).ToList();
             }
             catch (Exception ex)
@@ -38,9 +52,9 @@ namespace Stock.Web.Scraper.Service.Objects
             return this;
         }
 
-        public void AddRows(IEnumerable<ScreenerRowData> rowsToAdd)
+        public void AddRows(IEnumerable<ScreenerRow> rowsToAdd)
         {
-            rowsToAdd = rowsToAdd ?? new List<ScreenerRowData>();
+            rowsToAdd = rowsToAdd ?? new List<ScreenerRow>();
             Stocks = rowsToAdd.Concat(Stocks).ToList();
         }
     }

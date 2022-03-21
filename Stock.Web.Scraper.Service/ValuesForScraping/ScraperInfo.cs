@@ -13,6 +13,7 @@ namespace Stock.Web.Scraper.Service.ValuesForScraping
         {
             public static string RowNames => "//table//tr//td//a[contains(@class, 'screener-link-primary')]";
             public static string RowPrice => "//table//tr//td//a//span";
+            public static string RowPriceWithTicker(string ticker) => $"//table//tr//td//a[contains(@href, 'quote.ashx?t={ticker}&ty=c&p=d&b=1')]";
         };
 
         public static readonly List<(string title, string url)> Screeners = new()

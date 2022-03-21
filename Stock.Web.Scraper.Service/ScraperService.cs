@@ -1,8 +1,10 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Stock.Web.Scraper.Service.Objects;
+using Stock.Web.Scraper.Service.Utilities;
 using Stock.Web.Scraper.Service.Utilities.Csv;
 using Stock.Web.Scraper.Service.ValuesForScraping;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -28,8 +30,20 @@ namespace Stock.Web.Scraper.Service
                 {
                     ScraperInfo.Screeners.ForEach(UpdateCsv);
                 }
-                catch { }
-                await Task.Delay(1000, stoppingToken);
+                finally
+                {
+                    CustomTaskScheduler.Instance.ScheduleTask(9, 30, 24, () =>
+                    {
+                        Console.WriteLine("Scraping Stonk data" + DateTime.Now);
+                        //here write the code that you want to schedule
+                    });
+
+                    CustomTaskScheduler.Instance.ScheduleTask(9, 30, 0.00417, () =>
+                    {
+                        Console.WriteLine("This should Happen every 15 seconds" + DateTime.Now);
+                        //here write the code that you want to schedule
+                    });
+                }
             }
         }
 
@@ -40,12 +54,12 @@ namespace Stock.Web.Scraper.Service
             UpdateCsv(screener);
         }
 
-        private IEnumerable<ScreenerRowData> GetExistingRows((string title, string url) s)
+        private IEnumerable<ScreenerRow> GetExistingRows((string title, string url) s)
         {
-            var stocks = $"{csvPath}{s.title}".ReadFromCsv<ScreenerRowData>().ToList();
+            var stocks = $"{csvPath}{s.title}".ReadFromCsv<ScreenerRow>().ToList();
             stocks.ForEach(row => row.UpdatePrices());
 
-            return stocks ?? new List<ScreenerRowData>();
+            return stocks ?? new List<ScreenerRow>();
         }
 
         private void UpdateCsv(FinVizStockScreener obj)
