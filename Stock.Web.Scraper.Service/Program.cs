@@ -1,5 +1,4 @@
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using Stock.Web.Scraper.Service.Jobs;
 
 namespace Stock.Web.Scraper.Service
 {
@@ -7,14 +6,7 @@ namespace Stock.Web.Scraper.Service
   {
     public static void Main(string[] args)
     {
-      CreateHostBuilder(args).Build().Run();
+      new ScrapeScreenerData().RunScrapers();
     }
-
-    public static IHostBuilder CreateHostBuilder(string[] args) =>
-        Host.CreateDefaultBuilder(args)
-            .ConfigureServices((hostContext, services) =>
-            {
-              services.AddHostedService<ScraperService>();
-            });
   }
 }

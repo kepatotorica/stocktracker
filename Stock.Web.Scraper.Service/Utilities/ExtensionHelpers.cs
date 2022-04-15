@@ -8,9 +8,9 @@ namespace Stock.Web.Scraper.Service.Utilities
     {
       //23 and 25 are to give an hour of leway for the run time of the task.
       var utcNow = DateTime.UtcNow;
-      var bottomRange = utcNow.AddHours(23 + 24 * days);
-      var topRange = utcNow.AddHours(25 + 24 * days);
-      return time > topRange && time < bottomRange;
+      var bottomRange = time.AddHours(-1 + 24 * days);
+      var topRange = time.AddHours(25 + 24 * days);
+      return utcNow > bottomRange && utcNow < topRange;
     }
 
     public static bool DaysAgo(this DateTime? time, int days)

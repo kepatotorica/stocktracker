@@ -9,35 +9,17 @@ namespace Stock.Web.Scraper.Service.Objects
   public class ScreenerRowData
   {
     public string Ticker { get; set; }
-    public decimal? CurrentPrice { get; set; }
-    public decimal? PriceWhenAdded { get; set; }
-    public DateTime? DateAdded { get; set; }
-    public decimal? DayPrice { get; set; }
-    public decimal? FiveDayPrice { get; set; }
-    public decimal? TenDayPrice { get; set; }
-    public decimal? MonthPrice { get; set; }
-    public decimal? ThreeMonthPrice { get; set; }
-    public decimal? YearPrice { get; set; }
+    public decimal CurrentPrice { get; set; }
+    public decimal PriceWhenAdded { get; set; }
+    public string DateAdded { get; set; }
+    public decimal? DayPercent { get; set; }
+    public decimal? FiveDayPercent { get; set; }
+    public decimal? TenDayPercent { get; set; }
+    public decimal? MonthPercent { get; set; }
+    public decimal? ThreeMonthPercent { get; set; }
+    public decimal? YearPercent { get; set; }
 
-    public ScreenerRowData(string ticker = null, string dateAdded = null, decimal? currentPrice = null)
-    {
-      try
-      {
-        DateAdded = DateTime.Parse(dateAdded);
-      }
-      catch
-      {
-        DateAdded = DateTime.UtcNow;
-      }
-
-      this.Ticker = ticker;
-      this.CurrentPrice = currentPrice;
-
-      if (PriceWhenAdded == null)
-      {
-        this.PriceWhenAdded = currentPrice;
-      }
-    }
+    public ScreenerRowData() { }
 
     public decimal? GetOpenPrice()
     {
@@ -46,47 +28,62 @@ namespace Stock.Web.Scraper.Service.Objects
       return Decimal.Parse(doc.DocumentNode.SelectNodes(ScraperInfo.StockPageIds.Open).First().InnerHtml);
     }
 
+    public decimal GetCurrentPrice()
+    {
+      HtmlDocument doc = new HtmlWeb().Load($"https://finance.yahoo.com/quote/{Ticker}?p={Ticker}");
+
+      return Decimal.Round(Decimal.Parse(doc.DocumentNode.SelectNodes(ScraperInfo.StockPageIds.CurrentValue).First().InnerHtml), 2);
+    }
+
     public void UpdatePrices()
     {
       //TODOASDF Find a way to cache all of the prices for any stock so we don't have to keep scraping data if the same stock pops up
       try
       {
-        DateTime now = DateTime.UtcNow;
-        if (DateAdded > now.AddMinutes(-10) && DateAdded <= now.AddMinutes(10)) // First Time Being Added
+        string now = DateTime.UtcNow.ToString("MM/dd/yy");
+        var dateAdded = DateTime.Parse(DateAdded);
+
+        if (DateAdded != now)
         {
-          PriceWhenAdded = CurrentPrice;
+          CurrentPrice = GetCurrentPrice();
         }
-        else if (DateAdded.DaysAgo(1))
+
+        if (dateAdded.DaysAgo(1))
         {
-          DayPrice = CurrentPrice;
+          DayPercent = PercentChangedSinceAdded();
         }
-        else if (DateAdded.DaysAgo(5))
+        else if (dateAdded.DaysAgo(5))
         {
-          FiveDayPrice = CurrentPrice;
+          FiveDayPercent = PercentChangedSinceAdded();
         }
-        else if (DateAdded.DaysAgo(10))
+        else if (dateAdded.DaysAgo(10))
         {
-          TenDayPrice = CurrentPrice;
+          TenDayPercent = PercentChangedSinceAdded();
         }
-        else if (DateAdded.DaysAgo(30))
+        else if (dateAdded.DaysAgo(30))
         {
-          MonthPrice = CurrentPrice;
+          MonthPercent = PercentChangedSinceAdded();
         }
-        else if (DateAdded.DaysAgo(90))
+        else if (dateAdded.DaysAgo(90))
         {
-          ThreeMonthPrice = CurrentPrice;
+          ThreeMonthPercent = PercentChangedSinceAdded();
         }
-        else if (DateAdded.DaysAgo(365))
+        else if (dateAdded.DaysAgo(365))
         {
-          YearPrice = CurrentPrice;
+          YearPercent = PercentChangedSinceAdded();
         }
       }
       catch { }
     }
 
+    private decimal? PercentChangedSinceAdded()
+    {
+      return Decimal.Round(((CurrentPrice - PriceWhenAdded) / PriceWhenAdded * 100), 2);
+    }
+
     public string DateAndTicker()
     {
-      return $"{DateAdded?.ToString("MM/dd/yyyy")}{Ticker}";
+      return $"{DateAdded}{Ticker}";
     }
 
     public override bool Equals(object other)
@@ -98,6 +95,5 @@ namespace Stock.Web.Scraper.Service.Objects
     {
       return DateAndTicker().GetHashCode();
     }
-
   }
 }

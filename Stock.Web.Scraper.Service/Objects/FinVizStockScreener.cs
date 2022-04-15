@@ -1,29 +1,29 @@
 ﻿using HtmlAgilityPack;
 using Stock.Web.Scraper.Service.ValuesForScraping;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Stock.Web.Scraper.Service.Objects
 {
-  public class FinVizStockScreenerData
+  public class FinVizStockScreener
   {
     public string Title { get; set; }
     public string ScreenerUrl { get; set; }
     public List<ScreenerRowData> Stocks { get; set; } = new List<ScreenerRowData>();
 
-    public FinVizStockScreenerData((string title, string screenerUrl) screenerSrapingData)
+    public FinVizStockScreener((string title, string screenerUrl) screenerSrapingData)
     {
       Title = screenerSrapingData.title;
       ScreenerUrl = screenerSrapingData.screenerUrl;
     }
 
-    public FinVizStockScreenerData UpdateScreener()
+    public FinVizStockScreener ScrapeCurrentScreenerData()
     {
       try
       {
         HtmlDocument doc = new HtmlWeb().Load(ScreenerUrl);
         var tickers = doc.DocumentNode.SelectNodes(ScraperInfo.ScreenerPageIds.RowNames).Select(rows => rows.InnerHtml);
-        var TODOASDFDELETEME = doc.DocumentNode.SelectNodes(ScraperInfo.ScreenerPageIds.RowPrice).ToList();
 
         Stocks = tickers.Select(ticker =>
         {
@@ -39,7 +39,9 @@ namespace Stock.Web.Scraper.Service.Objects
           return new ScreenerRowData
           {
             Ticker = ticker,
-            CurrentPrice = price
+            CurrentPrice = price,
+            PriceWhenAdded = price,
+            DateAdded = DateTime.Now.ToString("MM/dd/yy")
           };
         }).ToList();
       }
