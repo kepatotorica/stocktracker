@@ -6,19 +6,19 @@ using System.Linq;
 
 namespace Stock.Web.Scraper.Service.Objects
 {
-  public class FinVizStockScreener
+  public class Screener
   {
     public string Title { get; set; }
     public string ScreenerUrl { get; set; }
     public List<ScreenerRowData> Stocks { get; set; } = new List<ScreenerRowData>();
 
-    public FinVizStockScreener((string title, string screenerUrl) screenerSrapingData)
+    public Screener((string title, string screenerUrl) screenerSrapingData)
     {
       Title = screenerSrapingData.title;
       ScreenerUrl = screenerSrapingData.screenerUrl;
     }
 
-    public FinVizStockScreener ScrapeCurrentScreenerData()
+    public Screener ScrapeCurrentScreenerData()
     {
       try
       {

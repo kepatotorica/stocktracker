@@ -9,21 +9,28 @@ namespace Stock.Web.Scraper.Service.Jobs
   public class ScrapeScreenerData
   {
     public string csvPath = "C:\\Users\\kep\\Desktop\\EasyAccess\\CSV Files\\";
+    public List<Screener> screeners = new List<Screener>();
 
-    public ScrapeScreenerData() { }
-
-    public void RunScrapers()
+    public void ScrapeAndUpdate()
     {
       ScraperInfo.Screeners.ForEach(UpdateCsv);
+      var summaries = screeners.Select(screener => new ScreenerSummary(screener)).OrderByDescending(summary => summary.DayPercent);
+      UpdateScreenerSummaryCSV(summaries);
+    }
+
+    private void UpdateScreenerSummaryCSV(IEnumerable<ScreenerSummary> screenerSummaries)
+    {
+      screenerSummaries.WriteToCsv($"{csvPath}Summary");
     }
 
     private void UpdateCsv((string title, string url) s)
     {
       try
       {
-        var screener = new FinVizStockScreener(s).ScrapeCurrentScreenerData();
+        var screener = new Screener(s).ScrapeCurrentScreenerData();
         screener.AddRows(GetExistingRows(s));
-        UpdateCsv(screener);
+        screeners.Add(screener);
+        UpdateScreenerCsv(screener);
       }
       catch { }
     }
@@ -40,7 +47,7 @@ namespace Stock.Web.Scraper.Service.Jobs
       return stocks;
     }
 
-    private void UpdateCsv(FinVizStockScreener obj)
+    private void UpdateScreenerCsv(Screener obj)
     {
       obj.Stocks.WriteToCsv($"{csvPath}{obj.Title}");
     }

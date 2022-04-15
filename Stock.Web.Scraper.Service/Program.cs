@@ -6,7 +6,7 @@ namespace Stock.Web.Scraper.Service
   {
     public static void Main(string[] args)
     {
-      new ScrapeScreenerData().RunScrapers();
+      new ScrapeScreenerData().ScrapeAndUpdate();
     }
   }
 }
