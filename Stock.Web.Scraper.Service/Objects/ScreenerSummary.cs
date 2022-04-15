@@ -17,7 +17,7 @@ namespace Stock.Web.Scraper.Service.Objects
     public ScreenerSummary(Screener screener)
     {
       ScreenerName = screener.Title;
-      StocksPerDay = screener.Stocks.Count() / screener.Stocks.Select(s => s.DateAdded).Distinct().Count();
+      StocksPerDay = screener.Stocks.Any() ? screener.Stocks.Count() / screener.Stocks.Select(s => s.DateAdded).Distinct().Count() : 0m;
       UpdatePercentages(screener.Stocks);
     }
 

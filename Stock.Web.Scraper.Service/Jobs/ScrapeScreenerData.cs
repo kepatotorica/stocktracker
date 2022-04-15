@@ -8,7 +8,8 @@ namespace Stock.Web.Scraper.Service.Jobs
 {
   public class ScrapeScreenerData
   {
-    public string csvPath = "C:\\Users\\kep\\Desktop\\EasyAccess\\CSV Files\\";
+    public string screenerCsvPath = "C:\\WebScrapin\\stocktracker\\Stock.Web.Scraper.Service\\CsvFiles\\Screeners\\";
+    public string summaryCsvPath = "C:\\WebScrapin\\stocktracker\\Stock.Web.Scraper.Service\\CsvFiles\\";
     public List<Screener> screeners = new List<Screener>();
 
     public void ScrapeAndUpdate()
@@ -16,11 +17,6 @@ namespace Stock.Web.Scraper.Service.Jobs
       ScraperInfo.Screeners.ForEach(UpdateCsv);
       var summaries = screeners.Select(screener => new ScreenerSummary(screener)).OrderByDescending(summary => summary.DayPercent);
       UpdateScreenerSummaryCSV(summaries);
-    }
-
-    private void UpdateScreenerSummaryCSV(IEnumerable<ScreenerSummary> screenerSummaries)
-    {
-      screenerSummaries.WriteToCsv($"{csvPath}Summary");
     }
 
     private void UpdateCsv((string title, string url) s)
@@ -40,7 +36,7 @@ namespace Stock.Web.Scraper.Service.Jobs
       var stocks = new List<ScreenerRowData>();
       try
       {
-        stocks = $"{csvPath}{s.title}".ReadFromCsv<ScreenerRowData>().ToList();
+        stocks = $"{screenerCsvPath}{s.title}".ReadFromCsv<ScreenerRowData>().ToList();
         stocks.ForEach(row => row.UpdatePrices());
       }
       catch { }
@@ -49,7 +45,12 @@ namespace Stock.Web.Scraper.Service.Jobs
 
     private void UpdateScreenerCsv(Screener obj)
     {
-      obj.Stocks.WriteToCsv($"{csvPath}{obj.Title}");
+      obj.Stocks.WriteToCsv($"{screenerCsvPath}{obj.Title}");
+    }
+
+    private void UpdateScreenerSummaryCSV(IEnumerable<ScreenerSummary> screenerSummaries)
+    {
+      screenerSummaries.WriteToCsv($"{summaryCsvPath}Summary");
     }
   }
 }
