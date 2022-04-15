@@ -8,8 +8,8 @@ namespace Stock.Web.Scraper.Service.Jobs
 {
   public class ScrapeScreenerData
   {
-    public string screenerCsvPath = "C:\\Users\\kep\\Desktop\\EasyAccess\\CSV Files\\Screeners\\";
-    public string summaryCsvPath = "C:\\Users\\kep\\Desktop\\EasyAccess\\CSV Files\\";
+    public string screenerCsvPath = "C:\\WebScrapin\\stocktracker\\Stock.Web.Scraper.Service\\CsvFiles\\Screeners\\";
+    public string summaryCsvPath = "C:\\WebScrapin\\stocktracker\\Stock.Web.Scraper.Service\\CsvFiles\\";
     public List<Screener> screeners = new List<Screener>();
 
     public void ScrapeAndUpdate()
