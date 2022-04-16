@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Stock.Web.Scraper.Service.Tests
 {
-  public class FinVizStockScreenerTests
+  public class ScreenerTests
   {
     public static string now = DateTime.UtcNow.ToString("MM/dd/yy");
     public static DateTime nowDate = DateTime.Parse(now);
@@ -51,7 +51,7 @@ namespace Stock.Web.Scraper.Service.Tests
       }
     };
 
-    public FinVizStockScreenerTests()
+    public ScreenerTests()
     {
       stocks = ScrapedValues;
 

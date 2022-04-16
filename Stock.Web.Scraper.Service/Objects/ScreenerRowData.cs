@@ -38,35 +38,35 @@ namespace Stock.Web.Scraper.Service.Objects
       //TODOASDF Find a way to cache all of the prices for any stock so we don't have to keep scraping data if the same stock pops up
       try
       {
-        string now = DateTime.UtcNow.ToString("MM/dd/yy");
+        var now = DateTime.Now;
         var dateAdded = DateTime.Parse(DateAdded);
 
-        if (DateAdded != now)
+        if (DateAdded != now.ToString("MM/dd/yy"))
         {
           CurrentPrice = GetCurrentPrice();
         }
 
-        if (dateAdded.DaysAgo(1))
+        if (dateAdded.BusinessDaysBetween(now) == 1)
         {
           DayPercent = PercentChangedSinceAdded();
         }
-        else if (dateAdded.DaysAgo(5))
+        else if (dateAdded.BusinessDaysBetween(now) == 5)
         {
           FiveDayPercent = PercentChangedSinceAdded();
         }
-        else if (dateAdded.DaysAgo(10))
+        else if (dateAdded.BusinessDaysBetween(now) == 10)
         {
           TenDayPercent = PercentChangedSinceAdded();
         }
-        else if (dateAdded.DaysAgo(30))
+        else if (dateAdded.BusinessDaysBetween(now) == 30)
         {
           MonthPercent = PercentChangedSinceAdded();
         }
-        else if (dateAdded.DaysAgo(90))
+        else if (dateAdded.BusinessDaysBetween(now) == 90)
         {
           ThreeMonthPercent = PercentChangedSinceAdded();
         }
-        else if (dateAdded.DaysAgo(365))
+        else if (dateAdded.BusinessDaysBetween(now) == 365)
         {
           YearPercent = PercentChangedSinceAdded();
         }
