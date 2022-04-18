@@ -6,28 +6,28 @@ using System.Linq;
 
 namespace Stock.Web.Scraper.Service.Objects
 {
-  public class Screener
+  public class ScreenerTable
   {
     public string Title { get; set; }
-    public string ScreenerUrl { get; set; }
-    public List<ScreenerRowData> Stocks { get; set; } = new List<ScreenerRowData>();
+    public string Url { get; set; }
+    public List<StockRow> Stocks { get; set; } = new List<StockRow>();
 
-    public Screener((string title, string screenerUrl) screenerSrapingData)
+    public ScreenerTable(ScreenerInfo screenerSrapingData)
     {
-      Title = screenerSrapingData.title;
-      ScreenerUrl = screenerSrapingData.screenerUrl;
+      Title = screenerSrapingData.Title;
+      Url = screenerSrapingData.Url;
     }
 
-    public Screener ScrapeCurrentScreenerData()
+    public ScreenerTable ScrapeCurrentScreenerData()
     {
       try
       {
-        HtmlDocument doc = new HtmlWeb().Load(ScreenerUrl);
-        var tickers = doc.DocumentNode.SelectNodes(ScraperInfo.ScreenerPageIds.RowNames).Select(rows => rows.InnerHtml);
+        HtmlDocument doc = new HtmlWeb().Load(Url);
+        var tickers = doc.DocumentNode.SelectNodes(ScraperXpaths.ScreenerPageIds.RowNames)?.Select(rows => rows.InnerHtml) ?? new List<string>();
 
         Stocks = tickers.Select(ticker =>
         {
-          var priceText = doc.DocumentNode.SelectNodes(ScraperInfo.ScreenerPageIds.RowPriceWithTicker(ticker))
+          var priceText = doc.DocumentNode.SelectNodes(ScraperXpaths.ScreenerPageIds.RowPriceWithTicker(ticker))
                       .Where((x, i) => i == 8)
                       .First()
                       .FirstChild
@@ -36,22 +36,22 @@ namespace Stock.Web.Scraper.Service.Objects
           var price = 0m;
           decimal.TryParse(priceText, out price);
 
-          return new ScreenerRowData
+          return new StockRow
           {
             Ticker = ticker,
             CurrentPrice = price,
             PriceWhenAdded = price,
             DateAdded = DateTime.Now.ToString("MM/dd/yy")
           };
-        }).ToList();
+        }).Where(row => row.PriceWhenAdded != 0).ToList();
       }
       catch { }
       return this;
     }
 
-    public void AddRows(IEnumerable<ScreenerRowData> rowsToAdd)
+    public void AddRows(IEnumerable<StockRow> rowsToAdd)
     {
-      rowsToAdd = rowsToAdd ?? new List<ScreenerRowData>();
+      rowsToAdd = rowsToAdd ?? new List<StockRow>();
       var cleanedStocks = Stocks.Where(scrappedRows => !rowsToAdd.Any(existingRows => existingRows.Equals(scrappedRows)));
       Stocks = rowsToAdd.Concat(cleanedStocks).ToList();
     }

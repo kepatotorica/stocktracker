@@ -1,11 +1,12 @@
-﻿{
+{
   "profiles": {
     "Stock.Web.Scraper.Service": {
       "commandName": "Project",
-      "dotnetRunMessages": "true",
       "environmentVariables": {
         "DOTNET_ENVIRONMENT": "Development"
-      }
+      },
+      "dotnetRunMessages": "true",
+      "nativeDebugging": true
     }
   }
 }

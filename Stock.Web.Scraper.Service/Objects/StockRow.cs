@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Stock.Web.Scraper.Service.Objects
 {
-  public class ScreenerRowData
+  public class StockRow
   {
     public string Ticker { get; set; }
     public decimal CurrentPrice { get; set; }
@@ -19,18 +19,18 @@ namespace Stock.Web.Scraper.Service.Objects
     public decimal? ThreeMonthPercent { get; set; }
     public decimal? YearPercent { get; set; }
 
-    public decimal? GetOpenPrice()
-    {
-      HtmlDocument doc = new HtmlWeb().Load($"https://finance.yahoo.com/quote/{Ticker}?p={Ticker}");
-
-      return Decimal.Parse(doc.DocumentNode.SelectNodes(ScraperInfo.StockPageIds.Open).First().InnerHtml);
-    }
-
     public decimal GetCurrentPrice()
     {
-      HtmlDocument doc = new HtmlWeb().Load($"https://finance.yahoo.com/quote/{Ticker}?p={Ticker}");
+      HtmlDocument doc = new HtmlWeb().Load($"https://finviz.com/quote.ashx?t={Ticker}");
 
-      return Decimal.Round(Decimal.Parse(doc.DocumentNode.SelectNodes(ScraperInfo.StockPageIds.CurrentValue).First().InnerHtml), 2);
+      try
+      {
+        return Decimal.Round(Decimal.Parse(doc.DocumentNode.SelectNodes(ScraperXpaths.StockPageIds.CurrentValue).First().InnerHtml), 2);
+      }
+      catch
+      {
+        return 0m;
+      }
     }
 
     public void UpdatePrices()
@@ -86,7 +86,7 @@ namespace Stock.Web.Scraper.Service.Objects
 
     public override bool Equals(object other)
     {
-      return DateAndTicker().Equals(((ScreenerRowData)other).DateAndTicker());
+      return DateAndTicker().Equals(((StockRow)other).DateAndTicker());
     }
 
     public override int GetHashCode()
