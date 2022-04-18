@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Stock.Web.Scraper.Service.Objects
 {
-  public class ScreenerRowData
+  public class StockRow
   {
     public string Ticker { get; set; }
     public decimal CurrentPrice { get; set; }
@@ -19,18 +19,18 @@ namespace Stock.Web.Scraper.Service.Objects
     public decimal? ThreeMonthPercent { get; set; }
     public decimal? YearPercent { get; set; }
 
-    public decimal? GetOpenPrice()
-    {
-      HtmlDocument doc = new HtmlWeb().Load($"https://finance.yahoo.com/quote/{Ticker}?p={Ticker}");
-
-      return Decimal.Parse(doc.DocumentNode.SelectNodes(ScraperInfo.StockPageIds.Open).First().InnerHtml);
-    }
-
     public decimal GetCurrentPrice()
     {
-      HtmlDocument doc = new HtmlWeb().Load($"https://finance.yahoo.com/quote/{Ticker}?p={Ticker}");
+      HtmlDocument doc = new HtmlWeb().Load($"https://finviz.com/quote.ashx?t={Ticker}");
 
-      return Decimal.Round(Decimal.Parse(doc.DocumentNode.SelectNodes(ScraperInfo.StockPageIds.CurrentValue).First().InnerHtml), 2);
+      try
+      {
+        return Decimal.Round(Decimal.Parse(doc.DocumentNode.SelectNodes(ScraperXpaths.StockPageIds.CurrentValue).First().InnerHtml), 2);
+      }
+      catch
+      {
+        return 0m;
+      }
     }
 
     public void UpdatePrices()
@@ -38,35 +38,35 @@ namespace Stock.Web.Scraper.Service.Objects
       //TODOASDF Find a way to cache all of the prices for any stock so we don't have to keep scraping data if the same stock pops up
       try
       {
-        string now = DateTime.UtcNow.ToString("MM/dd/yy");
+        var now = DateTime.Now;
         var dateAdded = DateTime.Parse(DateAdded);
 
-        if (DateAdded != now)
+        if (DateAdded != now.ToString("MM/dd/yy"))
         {
           CurrentPrice = GetCurrentPrice();
         }
 
-        if (dateAdded.DaysAgo(1))
+        if (dateAdded.BusinessDaysBetween(now) == 1)
         {
           DayPercent = PercentChangedSinceAdded();
         }
-        else if (dateAdded.DaysAgo(5))
+        else if (dateAdded.BusinessDaysBetween(now) == 5)
         {
           FiveDayPercent = PercentChangedSinceAdded();
         }
-        else if (dateAdded.DaysAgo(10))
+        else if (dateAdded.BusinessDaysBetween(now) == 10)
         {
           TenDayPercent = PercentChangedSinceAdded();
         }
-        else if (dateAdded.DaysAgo(30))
+        else if (dateAdded.BusinessDaysBetween(now) == 30)
         {
           MonthPercent = PercentChangedSinceAdded();
         }
-        else if (dateAdded.DaysAgo(90))
+        else if (dateAdded.BusinessDaysBetween(now) == 90)
         {
           ThreeMonthPercent = PercentChangedSinceAdded();
         }
-        else if (dateAdded.DaysAgo(365))
+        else if (dateAdded.BusinessDaysBetween(now) == 365)
         {
           YearPercent = PercentChangedSinceAdded();
         }
@@ -86,7 +86,7 @@ namespace Stock.Web.Scraper.Service.Objects
 
     public override bool Equals(object other)
     {
-      return DateAndTicker().Equals(((ScreenerRowData)other).DateAndTicker());
+      return DateAndTicker().Equals(((StockRow)other).DateAndTicker());
     }
 
     public override int GetHashCode()

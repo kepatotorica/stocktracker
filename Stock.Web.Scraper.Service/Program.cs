@@ -1,4 +1,4 @@
-using Stock.Web.Scraper.Service.Jobs;
+using Stock.Web.Scraper.Service.Utilities;
 
 namespace Stock.Web.Scraper.Service
 {

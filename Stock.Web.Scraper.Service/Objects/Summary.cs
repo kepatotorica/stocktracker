@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Stock.Web.Scraper.Service.Objects
 {
-  public class ScreenerSummary
+  public class Summary
   {
     public string ScreenerName { get; set; }
     public decimal StocksPerDay { get; set; }
@@ -14,14 +14,14 @@ namespace Stock.Web.Scraper.Service.Objects
     public decimal? ThreeMonthPercent { get; set; }
     public decimal? YearPercent { get; set; }
 
-    public ScreenerSummary(Screener screener)
+    public Summary(ScreenerTable screener)
     {
       ScreenerName = screener.Title;
       StocksPerDay = screener.Stocks.Any() ? screener.Stocks.Count() / screener.Stocks.Select(s => s.DateAdded).Distinct().Count() : 0m;
       UpdatePercentages(screener.Stocks);
     }
 
-    private void UpdatePercentages(List<ScreenerRowData> stocks)
+    private void UpdatePercentages(List<StockRow> stocks)
     {
       DayPercent = stocks.Select(s => s.DayPercent).Where(percent => percent != null).Average();
       FiveDayPercent = stocks.Select(s => s.FiveDayPercent).Where(percent => percent != null).Average();
