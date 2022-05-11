@@ -1,0 +1,9 @@
+Ticker,CurrentPrice,PriceWhenAdded,DateAdded,DayPercent,FiveDayPercent,TenDayPercent,MonthPercent,ThreeMonthPercent,YearPercent
+REI,4.28,4.46,04/20/22,6.28,-2.24,8.30,,,
+ASC,6.50,5.91,04/22/22,-8.97,5.41,18.44,,,
+ASC,6.50,5.67,04/23/22,-5.11,9.88,23.46,,,
+ASC,6.50,6.33,04/27/22,-1.26,3.63,,,,
+ASC,6.50,6.32,05/02/22,7.28,-5.54,,,,
+ASC,6.50,6.78,05/03/22,-3.24,-4.13,,,,
+REI,4.28,4.83,05/04/22,2.48,,,,,
+REI,4.28,5.00,05/06/22,-12.80,,,,,

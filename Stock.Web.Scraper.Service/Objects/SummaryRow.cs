@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using Stock.Web.Scraper.Service.Utilities;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Stock.Web.Scraper.Service.Objects
 {
-  public class Summary
+  public class SummaryRow
   {
     public string ScreenerName { get; set; }
     public decimal StocksPerDay { get; set; }
@@ -14,10 +16,17 @@ namespace Stock.Web.Scraper.Service.Objects
     public decimal? ThreeMonthPercent { get; set; }
     public decimal? YearPercent { get; set; }
 
-    public Summary(ScreenerTable screener)
+    public SummaryRow(ScreenerTable screener)
     {
+      var daysScreened = screener.Stocks
+        .Select(s => DateTime.Parse(s.DateAdded))
+        .Distinct()
+        .OrderBy(d => d.Year)
+        .ThenBy(d => d.Month)
+        .ThenBy(d => d.Day)
+        .First().DaysSince() + 1m;
       ScreenerName = screener.Title;
-      StocksPerDay = screener.Stocks.Any() ? screener.Stocks.Count() / screener.Stocks.Select(s => s.DateAdded).Distinct().Count() : 0m;
+      StocksPerDay = screener.Stocks.Any() ? screener.Stocks.Count() / daysScreened : 0m;
       UpdatePercentages(screener.Stocks);
     }
 

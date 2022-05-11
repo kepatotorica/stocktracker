@@ -19,7 +19,7 @@ namespace Stock.Web.Scraper.Service.Utilities
       var screenerInfo = JArray.Parse(File.ReadAllText(screenerJsonPath)).Select(jsonItem => jsonItem.ToObject<ScreenerInfo>()).ToList();
 
       screenerInfo.ForEach(UpdateCsv);
-      var summaries = screeners.Select(screener => new Summary(screener)).OrderByDescending(summary => summary.DayPercent);
+      var summaries = screeners.Select(screener => new SummaryRow(screener)).OrderByDescending(summary => summary.DayPercent);
       UpdateScreenerSummaryCSV(summaries);
     }
 
@@ -52,7 +52,7 @@ namespace Stock.Web.Scraper.Service.Utilities
       obj.Stocks.WriteToCsv($"{screenerCsvPath}{obj.Title}");
     }
 
-    private void UpdateScreenerSummaryCSV(IEnumerable<Summary> screenerSummaries)
+    private void UpdateScreenerSummaryCSV(IEnumerable<SummaryRow> screenerSummaries)
     {
       screenerSummaries.WriteToCsv($"{summaryCsvPath}Summary");
     }

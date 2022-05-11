@@ -1,4 +1,5 @@
 using Stock.Web.Scraper.Service.Objects;
+using Stock.Web.Scraper.Service.Utilities;
 using Stock.Web.Scraper.Service.ValuesForScraping;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace Stock.Web.Scraper.Service.Tests
   {
     public static string now = DateTime.UtcNow.ToString("MM/dd/yy");
     public static DateTime nowDate = DateTime.Parse(now);
+    public static DateTime oldestTime = nowDate.AddDays(-365);
     public readonly List<StockRow> stocks;
     public readonly ScreenerTable sut;
 
@@ -46,7 +48,7 @@ namespace Stock.Web.Scraper.Service.Tests
       new StockRow
       {
         CurrentPrice = 2,
-        DateAdded = nowDate.AddDays(-1).ToString("MM/dd/yy"),
+        DateAdded = oldestTime.ToString("MM/dd/yy"),
         PriceWhenAdded = 2,
         Ticker = "JULES",
       }
@@ -71,7 +73,17 @@ namespace Stock.Web.Scraper.Service.Tests
     {
       sut.AddRows(CsvReadValues);
 
-      Assert.Equal(4, sut.Stocks.Count());
+      Assert.Equal(260, sut.Stocks.Count());
+    }
+
+    [Fact]
+    public void TheSummaryIncludesDaysWhereThereAreNoStocks()
+    {
+      sut.AddRows(CsvReadValues);
+
+      var summaryRow = new SummaryRow(sut);
+      var daysSinceOldestDay = oldestTime.DaysSince() + 1;
+      Assert.Equal(4m / daysSinceOldestDay, summaryRow.StocksPerDay);
     }
   }
 }

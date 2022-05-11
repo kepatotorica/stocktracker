@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Stock.Web.Scraper.Service.Tests": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}
