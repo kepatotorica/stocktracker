@@ -19,6 +19,10 @@
         "Url": "https://finviz.com/screener.ashx?v=111&f=sh_opt_optionshort,sh_avgvol_o100,sh_instown_u50,sh_price_o2,sh_short_o15&ft=4&o=-shortinterestshare"
     },
     {
+        "Title": "Short squeeze Smaller Set",
+        "Url": "https://finviz.com/screener.ashx?v=111&f=sh_avgvol_o100,sh_instown_u50,sh_opt_optionshort,sh_price_u15,sh_short_o30&ft=4&o=-shortinterestshare"
+    },
+    {
         "Title": "Weekly Earnings gap up",
         "Url": "https://finviz.com/screener.ashx?v=111&f=sh_opt_optionshort,earningsdate_tomorrowafter,sh_avgvol_o400,sh_curvol_o50,sh_short_u25,ta_averagetruerange_o0.5,ta_gap_u2&ft=4&o=-perfytd"
     },

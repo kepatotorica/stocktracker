@@ -6,6 +6,11 @@ namespace Stock.Web.Scraper.Service.Utilities
 {
   public static class ExtensionHelpers
   {
+    public static int DaysSince(this DateTime startDate)
+    {
+      return startDate.BusinessDaysBetween(DateTime.UtcNow);
+    }
+
     public static int BusinessDaysBetween(this DateTime startDate, DateTime endDate)
     {
       var years = Enumerable.Range(startDate.Year, endDate.Year);
