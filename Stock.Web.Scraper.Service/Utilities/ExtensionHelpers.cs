@@ -6,6 +6,11 @@ namespace Stock.Web.Scraper.Service.Utilities
 {
   public static class ExtensionHelpers
   {
+    public static decimal AveragePercent(this IEnumerable<decimal?> percents)
+    {
+      return Decimal.Round(percents.Where(percent => percent != null).Average() ?? 0m, 2);
+    }
+
     public static int DaysSince(this DateTime startDate)
     {
       return startDate.BusinessDaysBetween(DateTime.UtcNow);
