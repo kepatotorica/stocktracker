@@ -26,18 +26,18 @@ namespace Stock.Web.Scraper.Service.Objects
         .ThenBy(d => d.Day)
         .First().DaysSince() + 1m;
       ScreenerName = screener.Title;
-      StocksPerDay = screener.Stocks.Any() ? screener.Stocks.Count() / daysScreened : 0m;
+      StocksPerDay = screener.Stocks.Any() ? Decimal.Round(screener.Stocks.Count() / daysScreened, 2) : 0m;
       UpdatePercentages(screener.Stocks);
     }
 
     private void UpdatePercentages(List<StockRow> stocks)
     {
-      DayPercent = stocks.Select(s => s.DayPercent).Where(percent => percent != null).Average();
-      FiveDayPercent = stocks.Select(s => s.FiveDayPercent).Where(percent => percent != null).Average();
-      TenDayPercent = stocks.Select(s => s.TenDayPercent).Where(percent => percent != null).Average();
-      MonthPercent = stocks.Select(s => s.MonthPercent).Where(percent => percent != null).Average();
-      ThreeMonthPercent = stocks.Select(s => s.ThreeMonthPercent).Where(percent => percent != null).Average();
-      YearPercent = stocks.Select(s => s.YearPercent).Where(percent => percent != null).Average();
+      DayPercent = stocks.Select(s => s.DayPercent).AveragePercent();
+      FiveDayPercent = stocks.Select(s => s.FiveDayPercent).AveragePercent();
+      TenDayPercent = stocks.Select(s => s.TenDayPercent).AveragePercent();
+      MonthPercent = stocks.Select(s => s.MonthPercent).AveragePercent();
+      ThreeMonthPercent = stocks.Select(s => s.ThreeMonthPercent).AveragePercent();
+      YearPercent = stocks.Select(s => s.YearPercent).AveragePercent();
     }
   }
 }
