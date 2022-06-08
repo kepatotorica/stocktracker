@@ -1,8 +1,5 @@
-﻿using HtmlAgilityPack;
-using Stock.Web.Scraper.Service.Utilities;
-using Stock.Web.Scraper.Service.ValuesForScraping;
+﻿using Stock.Web.Scraper.Service.Utilities;
 using System;
-using System.Linq;
 
 namespace Stock.Web.Scraper.Service.Objects
 {
@@ -19,23 +16,8 @@ namespace Stock.Web.Scraper.Service.Objects
     public decimal? ThreeMonthPercent { get; set; }
     public decimal? YearPercent { get; set; }
 
-    public decimal GetCurrentPrice()
+    public void UpdatePrices(decimal currentPrice)
     {
-      HtmlDocument doc = new HtmlWeb().Load($"https://finviz.com/quote.ashx?t={Ticker}");
-
-      try
-      {
-        return Decimal.Round(Decimal.Parse(doc.DocumentNode.SelectNodes(ScraperXpaths.StockPageIds.CurrentValue).First().InnerHtml), 2);
-      }
-      catch
-      {
-        return 0m;
-      }
-    }
-
-    public void UpdatePrices()
-    {
-      //TODOASDF Find a way to cache all of the prices for any stock so we don't have to keep scraping data if the same stock pops up
       try
       {
         var now = DateTime.Now;
@@ -43,7 +25,7 @@ namespace Stock.Web.Scraper.Service.Objects
 
         if (DateAdded != now.ToString("MM/dd/yy"))
         {
-          CurrentPrice = GetCurrentPrice();
+          CurrentPrice = currentPrice;
         }
 
         if (dateAdded.BusinessDaysBetween(now) == 1)

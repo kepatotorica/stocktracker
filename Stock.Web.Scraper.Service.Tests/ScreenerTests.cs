@@ -1,3 +1,5 @@
+using FakeItEasy;
+using Microsoft.Extensions.Caching.Memory;
 using Stock.Web.Scraper.Service.Objects;
 using Stock.Web.Scraper.Service.Utilities;
 using Stock.Web.Scraper.Service.ValuesForScraping;
@@ -14,7 +16,7 @@ namespace Stock.Web.Scraper.Service.Tests
     public static DateTime nowDate = DateTime.Parse(now);
     public static DateTime oldestTime = nowDate.AddDays(-365);
     public readonly List<StockRow> stocks;
-    public readonly ScreenerTable sut;
+    public readonly ScreenerTableScraper sut;
 
 
     public List<StockRow> ScrapedValues = new List<StockRow>
@@ -64,7 +66,7 @@ namespace Stock.Web.Scraper.Service.Tests
         Url = "https://finviz.com/screener.ashx?v=111&f=exch_nasd,fa_pe_u10,sh_opt_option,ta_change_d7&ft=4"
       };
 
-      sut = new ScreenerTable(info);
+      sut = new ScreenerTableScraper(info, A.Fake<IMemoryCache>());
       sut.Stocks = stocks;
     }
 
