@@ -1,4 +1,7 @@
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
 using Stock.Web.Scraper.Service.Utilities;
+using System;
 
 namespace Stock.Web.Scraper.Service
 {
@@ -6,7 +9,13 @@ namespace Stock.Web.Scraper.Service
   {
     public static void Main(string[] args)
     {
-      new ScrapeScreenerData().ScrapeAndUpdate();
+      var config = new ConfigurationBuilder()
+        .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+        .AddJsonFile("appsettings.json")
+        .AddUserSecrets<Program>()
+        .Build();
+
+      new GetAndUpdateAllScreeners(new MemoryCache(new MemoryCacheOptions())).ScrapeAndUpdate();
     }
   }
 }

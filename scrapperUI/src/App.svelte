@@ -1,16 +1,16 @@
 <script>
 	export let name;
+	import { BasicTable } from 'csv2table';
 </script>
 
 <main>
 	<h1>Hello {name}!</h1>
 	<p>
-		Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn
-		how to build Svelte apps.
+		Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to
+		learn how to build Svelte apps.
+		<BasicTable csv={csvData} csvColumnDelimiter="," />
 	</p>
 </main>
-
-
 
 <style>
 	main {

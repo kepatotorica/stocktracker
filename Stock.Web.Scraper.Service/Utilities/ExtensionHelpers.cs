@@ -84,5 +84,7 @@ namespace Stock.Web.Scraper.Service.Utilities
       }
       return listOfDates;
     }
+
+
   }
 }

@@ -1,24 +1,30 @@
 ﻿using HtmlAgilityPack;
+using Microsoft.Extensions.Caching.Memory;
+using Stock.Web.Scraper.Service.Objects;
 using Stock.Web.Scraper.Service.ValuesForScraping;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Stock.Web.Scraper.Service.Objects
+namespace Stock.Web.Scraper.Service.Utilities
 {
-  public class ScreenerTable
+  public class ScreenerTableScraper
   {
     public string Title { get; set; }
     public string Url { get; set; }
+
+    private readonly IMemoryCache _memoryCache;
+
     public List<StockRow> Stocks { get; set; } = new List<StockRow>();
 
-    public ScreenerTable(ScreenerInfo screenerSrapingData)
+    public ScreenerTableScraper(ScreenerInfo screenerSrapingData, IMemoryCache memoryCache)
     {
       Title = screenerSrapingData.Title;
       Url = screenerSrapingData.Url;
+      _memoryCache = memoryCache;
     }
 
-    public ScreenerTable ScrapeCurrentScreenerData()
+    public ScreenerTableScraper ScrapeCurrentScreenerData()
     {
       try
       {
@@ -36,7 +42,7 @@ namespace Stock.Web.Scraper.Service.Objects
           var price = 0m;
           decimal.TryParse(priceText, out price);
 
-          return new StockRow
+          return new StockRow()
           {
             Ticker = ticker,
             CurrentPrice = price,
@@ -55,6 +61,5 @@ namespace Stock.Web.Scraper.Service.Objects
       var cleanedStocks = Stocks.Where(scrappedRows => !rowsToAdd.Any(existingRows => existingRows.Equals(scrappedRows)));
       Stocks = rowsToAdd.Concat(cleanedStocks).ToList();
     }
-
   }
 }

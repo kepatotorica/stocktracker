@@ -1,24 +1,24 @@
 ScreenerName,StocksPerDay,DayPercent,FiveDayPercent,TenDayPercent,MonthPercent,ThreeMonthPercent,YearPercent
-Oversold reversal,9.36,1.45,1.46,-4.63,0,0,0
-Weekly Earnings gap up,1.47,0.51,7.74,-16.36,0,0,0
-SMA crossover,9.77,-0.19,-2.07,-3.89,0,0,0
-Short squeeze,22.82,-0.27,-3.65,-9.38,0,0,0
-Bounce at moving average,15.91,-0.27,-5.17,-6.66,0,0,0
-Oversold with upcoming earnings,19.64,-0.28,-2.19,-5.12,0,0,0
-Potential uptrend from weekly lows,23.09,-0.30,-2.27,-6.62,0,0,0
-Undervalued dividend growth,22,-0.40,-1.83,-2.80,0,0,0
-CANSLIM,22.73,-0.52,-2.12,-4.03,0,0,0
-High Sales growth,21.82,-0.59,-2.00,-2.86,0,0,0
-Low PE value,21.95,-0.61,-2.22,-3.72,0,0,0
-Huge Drop,11.18,-0.94,-1.97,-4.80,0,0,0
-New highs,0.71,-0.96,-2.34,10.05,0,0,0
-High relative volume,5.14,-1.01,-3.00,-3.59,0,0,0
-Short squeeze Smaller Set,6.75,-1.03,-1.80,-1.44,0,0,0
-Buy and Hold value,6.09,-1.15,-2.79,-2.38,0,0,0
-High Earnings growth,16.68,-1.24,-4.49,-7.45,0,0,0
-Breaking out,7.09,-1.25,-4.61,-4.56,0,0,0
-Shorted stocks,17.18,-1.34,-4.37,-12.92,0,0,0
-Specific Testing Screener,3.09,-1.35,-7.28,-9.70,0,0,0
-Big Drop-low PE-Optionable,7.43,-1.39,-4.04,-4.42,0,0,0
-Bankruptcy squeeze candidates,3.05,-2.03,-5.39,-8.14,0,0,0
-Consistent growth on a bullish trend,1.68,-2.14,-6.83,-8.04,0,0,0
+Oversold reversal,5.57,1.45,1.46,-4.63,5.08,0,0
+Weekly Earnings gap up,0.81,0.51,7.74,-16.36,-27.66,0,0
+Bounce at moving average,10.76,-0.11,-5.17,-6.66,79.31,0,0
+SMA crossover,6.49,-0.20,-2.07,-3.89,1.75,0,0
+Short squeeze,14.65,-0.25,-3.65,-9.38,6.88,0,0
+New highs,0.61,-0.26,-2.34,10.05,22.59,0,0
+Oversold with upcoming earnings,11.73,-0.28,-2.19,-5.12,-1.10,0,0
+Potential uptrend from weekly lows,15.05,-0.33,-2.27,-6.62,13.15,0,0
+Undervalued dividend growth,14.16,-0.44,-1.83,-2.80,2.10,0,0
+CANSLIM,14.59,-0.52,-2.12,-4.03,9.23,0,0
+High Sales growth,14.05,-0.63,-2.00,-2.86,9.32,0,0
+Low PE value,14.14,-0.68,-2.22,-3.72,1.12,0,0
+Short squeeze Smaller Set,4,-0.81,-1.80,-1.44,16.01,0,0
+Huge Drop,7,-0.93,-1.97,-4.80,-4.63,0,0
+High relative volume,3.57,-0.93,-3.00,-3.59,12.62,0,0
+Breaking out,5.46,-1.15,-4.61,-4.56,-1.57,0,0
+High Earnings growth,11,-1.27,-4.49,-7.45,1.41,0,0
+Buy and Hold value,4.54,-1.27,-2.79,-2.38,8.92,0,0
+Shorted stocks,10.84,-1.30,-4.37,-12.92,-5.32,0,0
+Specific Testing Screener,2.05,-1.32,-7.28,-9.70,-3.23,0,0
+Big Drop-low PE-Optionable,4.42,-1.39,-4.04,-4.42,8.53,0,0
+Consistent growth on a bullish trend,1.16,-1.85,-6.83,-8.04,0,0,0
+Bankruptcy squeeze candidates,2.08,-2.06,-5.39,-8.14,-30.88,0,0

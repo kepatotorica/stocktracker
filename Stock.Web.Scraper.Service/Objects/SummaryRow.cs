@@ -16,18 +16,21 @@ namespace Stock.Web.Scraper.Service.Objects
     public decimal? ThreeMonthPercent { get; set; }
     public decimal? YearPercent { get; set; }
 
-    public SummaryRow(ScreenerTable screener)
+    public SummaryRow(ScreenerTableScraper screener)
     {
-      var daysScreened = screener.Stocks
-        .Select(s => DateTime.Parse(s.DateAdded))
-        .Distinct()
-        .OrderBy(d => d.Year)
-        .ThenBy(d => d.Month)
-        .ThenBy(d => d.Day)
-        .First().DaysSince() + 1m;
-      ScreenerName = screener.Title;
-      StocksPerDay = screener.Stocks.Any() ? Decimal.Round(screener.Stocks.Count() / daysScreened, 2) : 0m;
-      UpdatePercentages(screener.Stocks);
+      if (screener.Stocks.Any())
+      {
+        var daysScreened = screener.Stocks
+          .Select(s => DateTime.Parse(s.DateAdded))
+          .Distinct()
+          .OrderBy(d => d.Year)
+          .ThenBy(d => d.Month)
+          .ThenBy(d => d.Day)
+          .First().DaysSince() + 1m;
+        ScreenerName = screener.Title;
+        StocksPerDay = screener.Stocks.Any() ? Decimal.Round(screener.Stocks.Count() / daysScreened, 2) : 0m;
+        UpdatePercentages(screener.Stocks);
+      }
     }
 
     private void UpdatePercentages(List<StockRow> stocks)
