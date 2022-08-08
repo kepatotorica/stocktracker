@@ -1,5 +1,4 @@
-﻿using HtmlAgilityPack;
-using Microsoft.Extensions.Caching.Memory;
+﻿using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json.Linq;
 using Stock.Web.Scraper.Service.Objects;
 using Stock.Web.Scraper.Service.ValuesForScraping;
@@ -48,35 +47,38 @@ namespace Stock.Web.Scraper.Service.Utilities
       try
       {
         stocks = $"{screenerCsvPath}{s.Title}".ReadFromCsv<StockRow>().ToList();
-        stocks.ForEach(stock => stock.UpdatePrices(GetCurrentPrice(stock)));
+        UpdateCurrentPrices(stocks);
+        stocks.ForEach(stock => stock.UpdatePrices(stock.CurrentPrice));
       }
       catch { }
       return stocks;
     }
 
-    private decimal GetCurrentPrice(StockRow stock)
+    private void UpdateCurrentPrices(IEnumerable<StockRow> stocks)
     {
-      try
+      List<string> tickersThatNeedUpdating = new List<string>();
+      foreach (var stock in stocks)
       {
         if (!_memoryCache.TryGetValue($"{stock.Ticker}{DateTime.Now:MM/dd/yy}", out decimal todaysPrice))
         {
-          var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(3));
+          stock.CurrentPrice = todaysPrice;
 
-          //TODOASDF Make an API call to IDEX here, if it doesn't work, then and only then should you grab it from finviz
-          HtmlDocument doc = new HtmlWeb().Load($"https://finviz.com/quote.ashx?t={stock.Ticker}");
-          todaysPrice = Decimal.Round(Decimal.Parse(doc.DocumentNode.SelectNodes(ScraperXpaths.StockPageIds.CurrentValue).First().InnerHtml), 2);
-
-          if (todaysPrice == null)
-            todaysPrice = 0;
-
-          _memoryCache.Set($"{stock}{DateTime.Now:MM/dd/yy}", todaysPrice, cacheEntryOptions);
+          tickersThatNeedUpdating.Add(stock.Ticker);
         }
-
-        return todaysPrice;
       }
-      catch
+
+      var stocksFromApi = IexAPI.GetTickers(tickersThatNeedUpdating);
+
+      var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromSeconds(3));
+      foreach (var stock in stocksFromApi)
       {
-        return 0m;
+        _memoryCache.Set($"{stock.symbol}{DateTime.Now:MM/dd/yy}", stock.lastSalePrice, cacheEntryOptions);
+      }
+
+      foreach (var stock in stocks)
+      {
+        _memoryCache.TryGetValue($"{stock.Ticker}{DateTime.Now:MM/dd/yy}", out decimal todaysPrice);
+        stock.CurrentPrice = todaysPrice;
       }
     }
 

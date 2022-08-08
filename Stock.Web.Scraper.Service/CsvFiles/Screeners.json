@@ -39,6 +39,22 @@
         "Url": "https://finviz.com/screener.ashx?v=111&f=sh_opt_optionshort,sh_avgvol_o400,sh_curvol_o2000,sh_relvol_o1,ta_sma20_pa,ta_sma50_pb&ft=4&o=-perf1w"
     },
     {
+        "Title": "Bounce at moving average (rand1)",
+        "Url": "https://finviz.com/screener.ashx?v=111&f=sh_avgvol_o400,sh_curvol_o2000,sh_float_u100,sh_opt_optionshort,sh_relvol_o1,ta_sma20_pa,ta_sma50_pb&ft=4&o=-perf1w"
+    },
+    {
+        "Title": "Bounce at moving average (rand2) inverse of (rand3)",
+        "Url": "https://finviz.com/screener.ashx?v=111&f=fa_fpe_o20,sh_avgvol_o400,sh_curvol_o2000,sh_opt_optionshort,sh_relvol_o1,ta_sma20_pa,ta_sma50_pb&ft=4&o=-perf1w"
+    },
+    {
+        "Title": "Bounce at moving average (rand3) inverse of (rand2)",
+        "Url": "https://finviz.com/screener.ashx?v=111&f=fa_fpe_u20,sh_avgvol_o400,sh_curvol_o2000,sh_opt_optionshort,sh_relvol_o1,ta_sma20_pa,ta_sma50_pb&ft=4&o=-perf1w"
+    },
+    {
+        "Title": "Bounce at moving average (rand4)",
+        "Url": "https://finviz.com/screener.ashx?v=111&f=sh_avgvol_o400,sh_curvol_o2000,sh_opt_optionshort,sh_relvol_o1,sh_short_o10,ta_sma20_pa,ta_sma50_pb&ft=4&o=-perf1w"
+    },
+    {
         "Title": "Oversold reversal",
         "Url": "https://finviz.com/screener.ashx?v=111&f=sh_opt_optionshort,sh_price_o5,sh_relvol_o2,ta_change_u,ta_rsi_os30&ft=4&o=price"
     },

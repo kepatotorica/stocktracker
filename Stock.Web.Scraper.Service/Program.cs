@@ -7,9 +7,12 @@ namespace Stock.Web.Scraper.Service
 {
   public class Program
   {
+    public static IConfiguration Config { get; private set; }
+
+
     public static void Main(string[] args)
     {
-      var config = new ConfigurationBuilder()
+      Config = new ConfigurationBuilder()
         .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
         .AddJsonFile("appsettings.json")
         .AddUserSecrets<Program>()
